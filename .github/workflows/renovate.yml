@@ -1,0 +1,44 @@
+name: Renovate
+
+on:
+  schedule:
+    # Mondays 10:00 UTC (~ before 6am PT depending on DST)
+    - cron: "0 10 * * 1"
+  workflow_dispatch:
+  # Optional: run when dependencies change lands on main
+  push:
+    branches:
+      - main
+    paths:
+      - "package.json"
+      - "package-lock.json"
+      - "renovate.json"
+      - ".github/workflows/renovate.yml"
+
+concurrency:
+  group: renovate-${{ github.repository }}
+  cancel-in-progress: false
+
+jobs:
+  renovate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Self-hosted Renovate
+        uses: renovatebot/github-action@v46.3.13
+        with:
+          token: ${{ secrets.RENOVATE_TOKEN }}
+          # Repository config lives in renovate.json on the default branch.
+          # Global/self-hosted tweaks can be added via configurationFile if needed.
+        env:
+          RENOVATE_PLATFORM: github
+          RENOVATE_REPOSITORIES: ${{ github.repository }}
+          # Avoid colliding with the Mend Renovate GitHub App default prefix
+          RENOVATE_BRANCH_PREFIX: renovate-selfhosted/
+          RENOVATE_ONBOARDING: "false"
+          RENOVATE_REQUIRE_CONFIG: "required"
+          LOG_LEVEL: info
