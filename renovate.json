@@ -1,0 +1,44 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    ":semanticCommits",
+    ":preserveSemverRanges"
+  ],
+  "schedule": ["before 6am on monday"],
+  "timezone": "America/Los_Angeles",
+  "labels": ["dependencies"],
+  "rangeStrategy": "bump",
+  "npm": {
+    "enabled": true
+  },
+  "packageRules": [
+    {
+      "description": "Group Angular framework packages",
+      "matchPackagePatterns": ["^@angular/"],
+      "groupName": "angular",
+      "groupSlug": "angular"
+    },
+    {
+      "description": "Group TypeScript with Angular majors carefully — keep TS updates visible but non-noisy",
+      "matchPackageNames": ["typescript"],
+      "groupName": "typescript",
+      "groupSlug": "typescript"
+    },
+    {
+      "description": "Group Vitest and related test tooling",
+      "matchPackageNames": ["vitest", "jsdom"],
+      "groupName": "test tooling",
+      "groupSlug": "test-tooling"
+    },
+    {
+      "description": "Group non-major npm updates outside Angular",
+      "matchManagers": ["npm"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "matchPackagePatterns": ["^(?!@angular/)"],
+      "groupName": "npm non-major (non-Angular)",
+      "groupSlug": "npm-non-major-non-angular",
+      "automerge": false
+    }
+  ]
+}
