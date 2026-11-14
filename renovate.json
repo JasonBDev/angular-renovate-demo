@@ -15,7 +15,7 @@
   "packageRules": [
     {
       "description": "Group Angular framework packages",
-      "matchPackagePatterns": ["^@angular/"],
+      "matchPackageNames": ["@angular/**"],
       "groupName": "angular",
       "groupSlug": "angular"
     },
@@ -35,7 +35,7 @@
       "description": "Group non-major npm updates outside Angular",
       "matchManagers": ["npm"],
       "matchUpdateTypes": ["minor", "patch"],
-      "matchPackagePatterns": ["^(?!@angular/)"],
+      "matchPackageNames": ["!@angular/**"],
       "groupName": "npm non-major (non-Angular)",
       "groupSlug": "npm-non-major-non-angular",
       "automerge": false
